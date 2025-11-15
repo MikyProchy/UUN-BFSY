@@ -10,6 +10,7 @@ import { ListDto } from "@/types/listTypes";
 import newListModal from "@/components/core/NewListModal";
 import { ModalFooter } from "flowbite-react";
 import { v4 } from "uuid";
+import { addList } from "@/helpers/listStore";
 
 export type CreateListDto = Pick<ListDto, "members" | "items" | "listName">;
 
@@ -64,7 +65,8 @@ const NewListModal = ({ show, onHide }: Props) => {
   }, [onHide, reset]);
 
   const handleSubmit = useCallback(() => {
-    todoLists.push({
+    console.log(list.listName);
+    addList({
       ...list,
       listName: list.listName || "Untitled List",
       id: v4(),
@@ -80,7 +82,16 @@ const NewListModal = ({ show, onHide }: Props) => {
       <div className="flex flex-col justify-center items-center h-max gap-4">
         <label className="flex flex-col w-full">
           <span className="text-lg text-primary px-1">List Name</span>
-          <input className="border rounded-md border-gray-600 px-2 py-0.5" />
+          <input
+            value={list.listName}
+            onChange={(e) =>
+              setList((s) => ({
+                ...s,
+                listName: e.target.value,
+              }))
+            }
+            className="border rounded-md border-gray-600 px-2 py-0.5"
+          />
         </label>
         <ListLayout title={"ITEM LIST"}>
           {list.items.map(({ itemName }, idx) => (

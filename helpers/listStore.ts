@@ -75,6 +75,12 @@ export function removeList(listId: string) {
   }));
 }
 
+export function addList(list: ListDto) {
+  setState((prev) => ({
+    lists: [...prev.lists, list],
+  }));
+}
+
 export function useList(id?: string) {
   return useSyncExternalStore(
     subscribe,
