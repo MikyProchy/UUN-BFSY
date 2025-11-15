@@ -69,6 +69,12 @@ export function removeMember(listId: string, email: string) {
   }));
 }
 
+export function removeList(listId: string) {
+  setState((prev) => ({
+    lists: prev.lists.filter((l) => l.id !== listId),
+  }));
+}
+
 export function useList(id?: string) {
   return useSyncExternalStore(
     subscribe,
@@ -77,5 +83,9 @@ export function useList(id?: string) {
 }
 
 export function useLists() {
-  return useSyncExternalStore(subscribe, () => state.lists);
+  return useSyncExternalStore(
+    subscribe,
+    () => state.lists,
+    () => state.lists,
+  );
 }

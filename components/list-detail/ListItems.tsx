@@ -6,7 +6,6 @@ import ListLayout, {
   NewEntry,
 } from "@/components/list-detail/ListLayout";
 import { ListDto } from "@/types/listTypes";
-import { todoLists } from "@/data/todoLists";
 import { removeItem, toggleItemCompleted } from "@/helpers/listStore";
 
 const ListItems = ({ list }: { list: ListDto }) => {
