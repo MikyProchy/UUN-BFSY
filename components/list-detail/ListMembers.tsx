@@ -6,11 +6,36 @@ import ListLayout, {
   NewEntry,
 } from "@/components/list-detail/ListLayout";
 import { ListDto } from "@/types/listTypes";
-import { removeMember } from "@/helpers/listStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 const ListMembers = ({ list }: { list: ListDto }) => {
   const { id: listId, members } = list;
   const [isNewMember, setIsNewMember] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: addMember } = useMutation({
+    mutationFn: async (name: string) => {
+      return (
+        await axios.post(`/api/lists/${listId}/members`, { member: name })
+      ).data;
+    },
+    onSuccess: (data) => {
+      setIsNewMember(false);
+      queryClient.setQueryData(["lists", "list", listId], data.data);
+    },
+  });
+
+  const { mutate: removeMember } = useMutation({
+    mutationFn: async (member: string) => {
+      return (await axios.delete(`/api/lists/${listId}/members/${member}`))
+        .data;
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["lists", "list", listId], data.data);
+    },
+  });
 
   return (
     <ListLayout title="MEMBER LIST">
@@ -23,7 +48,7 @@ const ListMembers = ({ list }: { list: ListDto }) => {
             >
               <h5 className="text-white text-xl pl-2">{member}</h5>
               <button
-                onClick={() => removeMember(listId, member)}
+                onClick={() => removeMember(member)}
                 className="text-white p-2 cursor-pointer"
               >
                 ✖
@@ -38,10 +63,7 @@ const ListMembers = ({ list }: { list: ListDto }) => {
         {isNewMember && (
           <NewEntry
             onClose={() => setIsNewMember(false)}
-            onSubmit={(inputValue) => {
-              members.push(inputValue);
-              setIsNewMember(false);
-            }}
+            onSubmit={(inputValue) => addMember(inputValue)}
           />
         )}
         <AddButton onClick={() => setIsNewMember(true)}>

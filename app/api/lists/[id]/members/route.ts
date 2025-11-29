@@ -8,7 +8,7 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const body = (await request.json()) as ListItemDto;
+  const body = (await request.json()) as { member: string };
   const { id } = await params;
 
   const lists = getTodoLists();
@@ -21,14 +21,14 @@ export async function POST(
 
   const updatedList = {
     ...lists[idx],
-    items: [...lists[idx].items, body],
+    members: [...lists[idx].members, body.member],
   };
 
   const newLists = lists.toSpliced(idx, 1, updatedList);
   setTodoLists(newLists);
 
   return NextResponse.json({
-    message: "Item added successfully",
+    message: "Items added successfully",
     data: updatedList,
   });
 }
