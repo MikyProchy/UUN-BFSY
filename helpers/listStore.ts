@@ -1,6 +1,5 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import type { ListDto } from "@/types/listTypes";
 import { getTodoLists } from "@/data/todoLists";
 

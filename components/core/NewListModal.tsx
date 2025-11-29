@@ -1,16 +1,13 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import ListLayout, {
   AddButton,
   NewEntry,
 } from "@/components/list-detail/ListLayout";
 import { Modal } from "@/components/common/Modal";
-import { todoLists } from "@/data/todoLists";
-import { randomUUID } from "node:crypto";
 import { ListDto } from "@/types/listTypes";
-import newListModal from "@/components/core/NewListModal";
 import { ModalFooter } from "flowbite-react";
-import { v4 } from "uuid";
-import { addList } from "@/helpers/listStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 export type CreateListDto = Pick<ListDto, "members" | "items" | "listName">;
 
@@ -64,18 +61,25 @@ const NewListModal = ({ show, onHide }: Props) => {
     onHide();
   }, [onHide, reset]);
 
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: async (data: CreateListDto) => {
+      await axios.post(`/api/lists`, data);
+    },
+    onSuccess: () => {
+      queryClient
+        .invalidateQueries({ queryKey: ["lists"] })
+        .then(() => close());
+    },
+  });
+
   const handleSubmit = useCallback(() => {
-    console.log(list.listName);
-    addList({
+    mutate({
       ...list,
-      listName: list.listName || "Untitled List",
-      id: v4(),
-      dateCreated: new Date().toISOString(),
-      state: "active",
-      owner: "miky@example.com",
+      listName: list.listName,
     });
-    close();
-  }, [list, close]);
+  }, [list, mutate]);
 
   return (
     <Modal title="Create a new list" show={show} onHide={close}>

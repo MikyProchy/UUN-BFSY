@@ -9,7 +9,7 @@ export async function GET(
   const lists = getTodoLists();
   const res = lists.find((l) => l.id === id);
 
-  await new Promise((r) => setTimeout(r, 700));
+  await new Promise((r) => setTimeout(r, 500));
 
   if (!res) {
     return NextResponse.json({ error: "List not found" }, { status: 404 });
@@ -32,6 +32,8 @@ export async function DELETE(
   const newLists = [...lists];
   newLists.splice(idx, 1);
   setTodoLists(newLists);
+
+  await new Promise((r) => setTimeout(r, 500));
 
   return NextResponse.json({ message: "Deleted" });
 }
