@@ -1,6 +1,6 @@
 import { ListDto } from "@/types/listTypes";
 
-export const todoLists: ListDto[] = [
+export const seedTodoLists: ListDto[] = [
   {
     id: "d27c8c72-1a02-4a1a-90cc-51a9c42a0f9c",
     listName: "Grocery Shopping",
@@ -132,3 +132,26 @@ export const todoLists: ListDto[] = [
     ],
   },
 ];
+
+const globalForTodo = globalThis as {
+  __todoLists?: ListDto[];
+};
+
+function getGlobalStore(): ListDto[] {
+  if (!globalForTodo.__todoLists) {
+    globalForTodo.__todoLists = [...seedTodoLists];
+  }
+  return globalForTodo.__todoLists;
+}
+
+export function getTodoLists(): ListDto[] {
+  return getGlobalStore();
+}
+
+export function setTodoLists(newLists: ListDto[]): void {
+  globalForTodo.__todoLists = newLists;
+}
+
+export function resetTodoLists(): void {
+  globalForTodo.__todoLists = [...seedTodoLists];
+}

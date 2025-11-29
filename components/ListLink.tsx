@@ -5,7 +5,8 @@ import { ListDto } from "@/types/listTypes";
 import Link from "next/link";
 import { FaArrowRight, FaTrash } from "react-icons/fa";
 import { Modal } from "@/components/common/Modal";
-import { removeList } from "@/helpers/listStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 type Props = {
   list: ListDto;
@@ -13,11 +14,23 @@ type Props = {
 
 const ListLink = ({ list }: Props) => {
   const [isDeleteListModalOpen, setIsDeleteListModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      await axios.delete(`/api/lists/${list.id}`);
+    },
+    onSuccess: () => {
+      queryClient
+        .invalidateQueries({ queryKey: ["lists"] })
+        .then(() => setIsDeleteListModalOpen(false));
+    },
+  });
 
   const handleDelete = useCallback(() => {
     if (!list) return;
-    removeList(list.id);
-  }, [list]);
+    mutate();
+  }, [list, mutate]);
 
   return (
     <div
@@ -60,7 +73,8 @@ const ListLink = ({ list }: Props) => {
             </button>
             <button
               type="button"
-              className="rounded-md bg-red-600 px-4 py-1 text-white cursor-pointer"
+              className={`rounded-md px-4 py-1 text-white cursor-pointer ${isPending ? "bg-red-400" : "bg-red-600"}`}
+              disabled={isPending}
               onClick={handleDelete}
             >
               Delete
