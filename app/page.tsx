@@ -1,16 +1,14 @@
 "use client";
 
 import ListLink from "@/components/ListLink";
-import { LuShoppingCart } from "react-icons/lu";
+import { LuLoader, LuShoppingCart } from "react-icons/lu";
 import React, { useState } from "react";
 import NewListModal from "@/components/core/NewListModal";
-import { useLists } from "@/helpers/listStore";
+import { useLists } from "@/hooks/useLists";
 
 export default function Home() {
   const [shouldShowArchived, setShouldShowArchived] = useState(false);
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
-
-  const lists = useLists();
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
@@ -47,16 +45,8 @@ export default function Home() {
           />
           Show archived lists
         </label>
-        <div className="max-h-[70vh] overflow-scroll">
-          <div className="flex flex-col justify-center gap-2">
-            {lists
-              .filter((l) => (shouldShowArchived ? true : l.state === "active"))
-              .sort((a, b) => (a.dateCreated > b.dateCreated ? -1 : 1))
-              .map((list) => (
-                <ListLink key={list.id} list={list} />
-              ))}
-          </div>
-        </div>
+
+        <Lists archived={shouldShowArchived} />
       </div>
       <NewListModal
         show={isNewListModalOpen}
@@ -65,3 +55,32 @@ export default function Home() {
     </div>
   );
 }
+
+const Lists = ({ archived }: { archived?: boolean }) => {
+  const { data, isError, isLoading } = useLists(archived);
+
+  if (isError) {
+    return <h1>Something went wrong</h1>;
+  }
+
+  if (isLoading) {
+    return (
+      <LuLoader
+        className="animate-[spin_2s_linear_infinite] self-center text-primary-light mt-4"
+        size={36}
+      />
+    );
+  }
+
+  return (
+    <div className="max-h-[70vh] overflow-scroll">
+      <div className="flex flex-col justify-center gap-2">
+        {data && data.length > 0 ? (
+          data.map((list) => <ListLink key={list.id} list={list} />)
+        ) : (
+          <p>No lists found</p>
+        )}
+      </div>
+    </div>
+  );
+};
