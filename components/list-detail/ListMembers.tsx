@@ -8,6 +8,7 @@ import ListLayout, {
 import { ListDto } from "@/types/listTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useTranslations } from "use-intl";
 
 const ListMembers = ({ list }: { list: ListDto }) => {
   const { id: listId, members } = list;
@@ -37,8 +38,10 @@ const ListMembers = ({ list }: { list: ListDto }) => {
     },
   });
 
+  const t = useTranslations("DetailPage.Members");
+
   return (
-    <ListLayout title="MEMBER LIST">
+    <ListLayout title={t("title")}>
       <>
         {members.length > 0 ? (
           members.map((member) => (
@@ -67,7 +70,7 @@ const ListMembers = ({ list }: { list: ListDto }) => {
           />
         )}
         <AddButton onClick={() => setIsNewMember(true)}>
-          Add a new member
+          {t("addMember")}
         </AddButton>
       </>
     </ListLayout>

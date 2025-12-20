@@ -14,12 +14,12 @@ export function Modal({ show, onHide, title, children }: Props) {
   return (
     <MuiModal
       show={show}
-      size="sm"
       popup
+      position="center"
       onClose={onHide}
-      className="px-8 max-w-[640px] backdrop-blur-xs mx-auto"
+      className="backdrop-blur-xs h-screen"
     >
-      <div className="bg-background shadow-2xl rounded-lg">
+      <div className="bg-background shadow-2xl rounded-lg max-w-[640px] w-full mx-auto px-8 py-6 my-auto">
         <ModalHeader className="px-4">
           <span className="text-foreground text-2xl">{title}</span>
         </ModalHeader>

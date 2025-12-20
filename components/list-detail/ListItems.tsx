@@ -9,6 +9,7 @@ import { ListDto } from "@/types/listTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { CompletionPie } from "@/components/core/PieChart";
+import { useTranslations } from "use-intl";
 
 const ListItems = ({ list }: { list: ListDto }) => {
   const { id: listId, items } = list;
@@ -60,24 +61,26 @@ const ListItems = ({ list }: { list: ListDto }) => {
   const total = items.length;
   const completed = items.filter((i) => i.completed).length;
 
+  const t = useTranslations("DetailPage");
+
   return (
-    <ListLayout title={"ITEM LIST"}>
+    <ListLayout title={t("Items.title")}>
       <div className="p-4 px-6 bg-primary-light w-full border-b-primary border-b-2 flex gap-6 justify-center">
         <CompletionPie completed={completed} total={total} />
         <div className="flex flex-col my-auto gap-2">
           <div className="flex gap-2 items-baseline">
             <div className="h-3 w-3" style={{ backgroundColor: "white" }} />
-            <div className="text-white">Completed</div>
+            <div className="text-white">{t("PieChart.completed")}</div>
           </div>
           <div className="flex gap-2 items-baseline">
             <div
               className="h-3 w-3"
               style={{ backgroundColor: "rgba(255,255,255,0.35)" }}
             />
-            <div className="text-white">Remaining</div>
+            <div className="text-white">{t("PieChart.remaining")}</div>
           </div>
           <p className="text-white font-bold">
-            {((completed / total) * 100).toFixed(0)}% Done
+            {((completed / total) * 100).toFixed(0)}% {t("PieChart.done")}
           </p>
         </div>
       </div>
@@ -113,7 +116,9 @@ const ListItems = ({ list }: { list: ListDto }) => {
           onSubmit={(name) => addItem(name)}
         />
       )}
-      <AddButton onClick={() => setIsNewItem(true)}>Add a new item</AddButton>
+      <AddButton onClick={() => setIsNewItem(true)}>
+        {t("Items.addItem")}
+      </AddButton>
     </ListLayout>
   );
 };

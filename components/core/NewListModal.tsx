@@ -8,6 +8,7 @@ import { ListDto } from "@/types/listTypes";
 import { ModalFooter } from "flowbite-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useTranslations } from "use-intl";
 
 export type CreateListDto = Pick<ListDto, "members" | "items" | "listName">;
 
@@ -81,11 +82,14 @@ const NewListModal = ({ show, onHide }: Props) => {
     });
   }, [list, mutate]);
 
+  const tModal = useTranslations("CreateModal");
+  const t = useTranslations("DetailPage");
+
   return (
-    <Modal title="Create a new list" show={show} onHide={close}>
+    <Modal title={tModal("title")} show={show} onHide={close}>
       <div className="flex flex-col justify-center items-center h-max gap-4">
         <label className="flex flex-col w-full">
-          <span className="text-lg text-primary px-1">List Name</span>
+          <span className="text-lg text-primary px-1">{tModal("name")}</span>
           <input
             value={list.listName}
             onChange={(e) =>
@@ -97,7 +101,7 @@ const NewListModal = ({ show, onHide }: Props) => {
             className="border rounded-md border-gray-600 px-2 py-0.5"
           />
         </label>
-        <ListLayout title={"ITEM LIST"}>
+        <ListLayout title={t("Items.title")}>
           {list.items.map(({ itemName }, idx) => (
             <div
               key={`${itemName}-${idx}`}
@@ -125,10 +129,10 @@ const NewListModal = ({ show, onHide }: Props) => {
             />
           )}
           <AddButton onClick={() => setIsNewItem(true)}>
-            Add a new item
+            {t("Items.addItem")}
           </AddButton>
         </ListLayout>
-        <ListLayout title={"MEMBER LIST"}>
+        <ListLayout title={t("Members.title")}>
           {list.members.map((item, idx) => (
             <div
               key={item}
@@ -153,7 +157,7 @@ const NewListModal = ({ show, onHide }: Props) => {
             />
           )}
           <AddButton onClick={() => setIsNewMember(true)}>
-            Add a new member
+            {t("Members.addMember")}
           </AddButton>
         </ListLayout>
       </div>
@@ -166,7 +170,7 @@ const NewListModal = ({ show, onHide }: Props) => {
               "cursor-pointer bg-gray-500 text-white px-4 py-1 rounded-md"
             }
           >
-            Cancel
+            {tModal("cancel")}
           </button>
           <button
             type="button"
@@ -175,7 +179,7 @@ const NewListModal = ({ show, onHide }: Props) => {
               "cursor-pointer bg-primary text-white px-4 py-1 rounded-md"
             }
           >
-            Create List
+            {tModal("confirm")}
           </button>
         </div>
       </ModalFooter>

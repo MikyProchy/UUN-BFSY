@@ -7,6 +7,7 @@ import { FaArrowRight, FaTrash } from "react-icons/fa";
 import { Modal } from "@/components/common/Modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useTranslations } from "use-intl";
 
 type Props = {
   list: ListDto;
@@ -32,6 +33,8 @@ const ListLink = ({ list }: Props) => {
     mutate();
   }, [list, mutate]);
 
+  const t = useTranslations("DeleteModal");
+
   return (
     <div
       className="rounded-md py-4 px-4 bg-primary-light flex gap-4"
@@ -54,14 +57,11 @@ const ListLink = ({ list }: Props) => {
         <span className={"leading-4"}>{list.owner}</span>
       </Link>
       <Modal
-        title="Delete List"
+        title={t("title")}
         show={isDeleteListModalOpen}
         onHide={() => setIsDeleteListModalOpen(false)}
       >
-        <p>
-          Are you sure you want to delete this list? This action cannot be
-          undone.
-        </p>
+        <p>{t("perex")}</p>
         <div className="flex justify-end">
           <div className="flex gap-2 items-center">
             <button
@@ -69,7 +69,7 @@ const ListLink = ({ list }: Props) => {
               className="rounded-md bg-gray-500 px-4 py-1 text-white cursor-pointer"
               onClick={() => setIsDeleteListModalOpen(false)}
             >
-              Cancel
+              {t("cancel")}
             </button>
             <button
               type="button"
@@ -77,7 +77,7 @@ const ListLink = ({ list }: Props) => {
               disabled={isPending}
               onClick={handleDelete}
             >
-              Delete
+              {t("confirm")}
             </button>
           </div>
         </div>

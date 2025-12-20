@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 
 export function ToggleDarkMode() {
@@ -27,15 +29,10 @@ export function ToggleDarkMode() {
     <button
       type="button"
       onClick={toggle}
-      className="
-        inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium
-        bg-zinc-900 text-white hover:bg-zinc-800
-        dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200
-        transition
-      "
+      className="p-2 text-xl pb-3"
       aria-pressed={isDark}
     >
-      {isDark ? "🌙 Dark" : "☀️ Light"}
+      {isDark ? "🌙" : "☀️"}
     </button>
   );
 }

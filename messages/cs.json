@@ -1,0 +1,37 @@
+{
+  "Nav": {
+    "title": "SEZNAMY"
+  },
+  "HomePage": {
+    "title": "Moje seznamy",
+    "addList": "Přidat nový seznam",
+    "showArchived": "Zobrazit archivované"
+  },
+  "DeleteModal": {
+    "title": "Smazat seznam",
+    "perex": "Jste si jistí, že chcete smazat tento seznam? Tato akce je nevratná.",
+    "cancel": "Zrušit",
+    "confirm": "Smazat"
+  },
+  "CreateModal": {
+    "title": "Vytvořit nový seznam",
+    "name": "Název seznamu",
+    "cancel": "Zrušit",
+    "confirm": "Vytvořit"
+  },
+  "DetailPage": {
+    "PieChart": {
+      "completed": "Hotovo",
+      "remaining": "Zbývá",
+      "done": "Splněno"
+    },
+    "Items": {
+      "title": "Položky",
+      "addItem": "Přidat položku"
+    },
+    "Members": {
+      "title": "Členové",
+      "addMember": "Přidat člena"
+    }
+  }
+}

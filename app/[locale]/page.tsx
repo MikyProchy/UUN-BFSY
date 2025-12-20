@@ -6,18 +6,18 @@ import React, { useState } from "react";
 import NewListModal from "@/components/core/NewListModal";
 import { useLists } from "@/hooks/useLists";
 import { ToggleDarkMode } from "@/components/common/ToggleDarkMode";
+import LangSwitch from "@/components/common/LangSwitch";
+import { useTranslations } from "use-intl";
 
 export default function Home() {
   const [shouldShowArchived, setShouldShowArchived] = useState(false);
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
 
+  const tNav = useTranslations("Nav");
+  const t = useTranslations("HomePage");
+
   return (
-    <div className="w-screen h-screen flex items-center justify-center relative bg-background">
-      <div className="w-full h-16 border-b border-primary absolute top-0 bg-primary-light">
-        <div className="max-w-[1440px] flex">
-          <ToggleDarkMode />
-        </div>
-      </div>
+    <div className="w-screen h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col justify-center gap-3">
         <div className={"w-full flex items-center justify-between gap-2"}>
           <LuShoppingCart
@@ -27,7 +27,7 @@ export default function Home() {
             }
           />
           <div className={"text-white text-xl bg-primary px-8 py-2 rounded-md"}>
-            My Shopping Lists
+            {t("title")}
           </div>
         </div>
 
@@ -38,7 +38,7 @@ export default function Home() {
             "text-white text-xl bg-primary px-2 py-1 rounded-md text-center cursor-pointer"
           }
         >
-          Add new list
+          {t("addList")}
         </button>
         <label className="px-2 flex gap-2 bg-primary rounded-md py-1 text-white">
           <input
@@ -49,7 +49,7 @@ export default function Home() {
               "text-white text-xl bg-primary px-2 py-1 rounded-md text-center"
             }
           />
-          Show archived lists
+          {t("showArchived")}
         </label>
 
         <Lists archived={shouldShowArchived} />
