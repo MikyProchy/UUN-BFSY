@@ -5,13 +5,19 @@ import { LuLoader, LuShoppingCart } from "react-icons/lu";
 import React, { useState } from "react";
 import NewListModal from "@/components/core/NewListModal";
 import { useLists } from "@/hooks/useLists";
+import { ToggleDarkMode } from "@/components/common/ToggleDarkMode";
 
 export default function Home() {
   const [shouldShowArchived, setShouldShowArchived] = useState(false);
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <div className="w-screen h-screen flex items-center justify-center relative bg-background">
+      <div className="w-full h-16 border-b border-primary absolute top-0 bg-primary-light">
+        <div className="max-w-[1440px] flex">
+          <ToggleDarkMode />
+        </div>
+      </div>
       <div className="flex flex-col justify-center gap-3">
         <div className={"w-full flex items-center justify-between gap-2"}>
           <LuShoppingCart

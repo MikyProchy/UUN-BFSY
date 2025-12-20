@@ -19,12 +19,12 @@ export function Modal({ show, onHide, title, children }: Props) {
       onClose={onHide}
       className="px-8 max-w-[640px] backdrop-blur-xs mx-auto"
     >
-      <div className="bg-white shadow-2xl rounded-lg">
+      <div className="bg-background shadow-2xl rounded-lg">
         <ModalHeader className="px-4">
-          <span className="text-gray-900 text-2xl">{title}</span>
+          <span className="text-foreground text-2xl">{title}</span>
         </ModalHeader>
         <ModalBody>
-          <div className="space-y-6 p-4">{children}</div>
+          <div className="text-foreground space-y-6 p-4">{children}</div>
         </ModalBody>
       </div>
     </MuiModal>
